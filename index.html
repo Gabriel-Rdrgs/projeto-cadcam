@@ -1,1297 +1,567 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>CAD/CAM na Prática Odontológica</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAD/CAM na Odontologia</title>
 
-  <!-- Tipografia premium via CDNs -->
-  <!-- Display: Clash Display (Fontshare) · Corpo: General Sans (Fontshare) -->
-  <link
-    href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap"
+        rel="stylesheet"
+    >
 
-  <!-- Ícones Lucide (para HUD/teclas) -->
-  <script
-    src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"
-    defer
-  ></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <!-- GSAP para animações avançadas -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-    defer
-  ></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-    defer
-  ></script>
-
-  <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app" class="app-root">
-    <!-- HUD / Header fixo -->
-    <header class="hud" aria-label="Informações da apresentação">
-      <div class="hud-left">
-        <!-- Logo em SVG + logo UCB -->
-        <div class="hud-logo-mark" aria-label="Odontologia Digital · CAD/CAM">
-          <svg
-            viewBox="0 0 64 64"
-            aria-hidden="true"
-            class="hud-logo-svg"
-          >
-            <!-- Anel externo (scanner) -->
-            <circle
-              cx="32"
-              cy="32"
-              r="22"
-              class="hud-logo-ring"
-            ></circle>
-            <!-- Caminho tipo arco (trajetória de fresagem) -->
-            <path
-              d="M14 36c4 9 11.5 14 18 14s14-5 18-14"
-              class="hud-logo-arc"
-            ></path>
-            <!-- Dente estilizado -->
-            <path
-              d="M26 18c2-3 10-3 12 0 2 3 2 7 1 11s-2 7-3 11c-1 3-5 3-6 0-1-4-2-7-3-11s-1-8 1-11z"
-              class="hud-logo-tooth"
-            ></path>
-          </svg>
-          <span class="hud-logo-text">
-            Odontologia Digital
-            <span class="hud-logo-sub">CAD · CAM</span>
-          </span>
-        </div>
+    <div class="bg-grid"></div>
 
-        <div class="hud-divider"></div>
-
-        <div class="hud-meta">
-          <span class="hud-meta-pill">
-            <span class="hud-dot hud-dot-blue"></span>
-            Seminário Acadêmico · 2026
-          </span>
-          <span class="hud-meta-pill">
-            <span class="hud-dot hud-dot-gold"></span>
-            UCB · Odontologia
-          </span>
-        </div>
-      </div>
-
-      <div class="hud-right">
-        <div class="hud-slide-indicator" aria-label="Slide atual">
-          <span id="current-slide" class="hud-slide-current">00</span>
-          <span class="hud-slide-separator">/</span>
-          <span id="total-slides" class="hud-slide-total">15</span>
-        </div>
-
-        <div class="hud-progress-wrapper" aria-hidden="true">
-          <div class="hud-progress-track">
-            <div id="hud-progress-bar" class="hud-progress-bar"></div>
-          </div>
-        </div>
-
-        <button
-          class="hud-theme-toggle"
-          type="button"
-          data-theme-toggle
-          aria-label="Alternar tema"
-        >
-          <!-- Ícone será injetado via JS -->
-        </button>
-
-        <img
-          src="assets/imgs/logo-ucb.png"
-          alt="Logo da Universidade Católica de Brasília"
-          class="hud-ucb-logo"
-          loading="lazy"
-        />
-      </div>
-    </header>
-
-    <!-- Overlay de destaque (tecla D) -->
-    <div
-      id="highlight-overlay"
-      class="highlight-overlay"
-      aria-hidden="true"
-    >
-      <div class="highlight-overlay-backdrop"></div>
-      <div class="highlight-overlay-card">
-        <p class="highlight-label">Destaque clínico</p>
-        <p class="highlight-value" id="highlight-text">96% de sobrevivência em 5 anos</p>
-        <p class="highlight-sub">
-          Restaurações CAD/CAM em cerâmicas modernas, em estudos de 5 anos.
-        </p>
-      </div>
-    </div>
-
-    <!-- Canvas de partículas de fundo (título) -->
-    <canvas
-      id="intro-particles-canvas"
-      class="intro-particles-canvas"
-      aria-hidden="true"
-    ></canvas>
-
-    <!-- Container principal de slides -->
-    <main id="slides-container" class="slides-container" tabindex="-1">
-      <!-- SLIDE 0 - TÍTULO / INTRO -->
-      <section
-        class="slide slide-0 slide-type-intro is-active"
-        data-slide="0"
-        data-transition="particles"
-        aria-labelledby="slide-0-title"
-      >
-        <div class="slide-inner slide-layout-intro">
-          <div class="intro-left">
-            <header class="intro-header">
-              <p class="intro-kicker">Odontologia Digital · Fluxo CAD/CAM</p>
-
-              <h1 id="slide-0-title" class="intro-title" data-animate="title-scan">
-                CAD/CAM  na
-                <span class="intro-title-highlight">Prática Odontológica</span>
-              </h1>
-
-              <p class="intro-subtitle" data-animate="fade-up">
-                Da moldagem em gesso ao fluxo totalmente digital: como softwares CAD/CAM,
-                scanners intraorais e fresadoras estão redefinindo a previsibilidade clínica.
-              </p>
-            </header>
-
-            <div class="intro-meta-grid">
-              <article class="intro-meta-card" data-animate="card-up">
-                <h2 class="intro-meta-label">Para quem?</h2>
-                <p class="intro-meta-value">
-                  Professores e estudantes de Odontologia interessados em prática digital.
-                </p>
-              </article>
-
-              <article class="intro-meta-card" data-animate="card-up" data-delay="0.08">
-                <h2 class="intro-meta-label">Duração</h2>
-                <p class="intro-meta-value">~25 minutos · 16 slides focados em aplicação clínica.</p>
-              </article>
-            </div>
-
-            <div class="intro-chips" aria-label="Tópicos principais">
-              <button class="chip" type="button" data-animate="chip">Fluxo digital completo</button>
-              <button class="chip" type="button" data-animate="chip" data-delay="0.04">
-                Scanners intraorais
-              </button>
-              <button class="chip" type="button" data-animate="chip" data-delay="0.08">
-                Fresadoras &amp; impressão 3D
-              </button>
-              <button class="chip" type="button" data-animate="chip" data-delay="0.12">
-                IA &amp; planejamento guiado
-              </button>
-            </div>
-          </div>
-
-          <div class="intro-right">
-            <figure class="intro-hero" data-animate="image-zoom">
-              <div class="intro-hero-orbit"></div>
-              <div class="intro-hero-frame">
+    <main class="app-layout">
+        <div class="presentation-wrapper">
+            <div id="slides-container" class="presentation-container">
                 <img
-                  src="assets/imgs/scanner-intraoral.png"
-                  alt="Scanner intraoral realizando captura digital em arcada superior"
-                  class="intro-hero-img"
-                  loading="lazy"
-                />
-                <figcaption class="intro-hero-caption">
-                  Scanner intraoral integrado a fluxo CAD/CAM chairside.
-                </figcaption>
-              </div>
-            </figure>
-
-            <aside class="intro-stat-card" data-animate="stat-pop">
-              <div class="intro-stat-main">
-                <span class="intro-stat-prefix">&gt;</span>
-                <span
-                  id="intro-stat-counter"
-                  class="intro-stat-number"
-                  data-counter-target="50"
-                  data-counter-suffix="%"
+                    src="assets/imgs/logo-ucb.png"
+                    alt="Logo UCB"
+                    class="ucb-logo"
                 >
-                  0%
-                </span>
-              </div>
-              <p class="intro-stat-label">
-                das restaurações fixas em práticas modernas já envolvem algum nível de fluxo digital.
-              </p>
-            </aside>
-          </div>
-        </div>
-      </section>
 
-      <!-- SLIDE 1 - AGENDA -->
-      <section
-        class="slide slide-1"
-        data-slide="1"
-        data-transition="wipe"
-        aria-labelledby="slide-1-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-1-title" class="slide-title">Mapa da apresentação</h2>
-            <p class="slide-subtitle">
-              Uma visão guiada do percurso em ~25 minutos, da base conceitual aos casos clínicos.
-            </p>
-          </header>
+                <section class="slide active">
+                    <div class="slide-content center-content">
+                        <h1 class="slide-title huge-title">
+                            Softwares CAD/CAM<br>na Prática Odontológica
+                        </h1>
+                        <p class="slide-subtitle">
+                            Fluxo digital, softwares e impacto clínico
+                        </p>
 
-          <div class="slide-grid grid-2">
-            <article class="card step-card" data-animate="card-stagger">
-              <span class="card-tag">Bloco 1</span>
-              <h3 class="card-title">Fundamentos</h3>
-              <ul class="card-list">
-                <li>Linha do tempo do CAD/CAM na odontologia.</li>
-                <li>Conceitos centrais de CAD, CAM e fluxo digital.</li>
-              </ul>
-            </article>
+                        <div class="png-slot cover-slot float-anim">
+                            <span>🦷✨💻</span>
+                        </div>
 
-            <article class="card step-card" data-animate="card-stagger" data-delay="0.06">
-              <span class="card-tag">Bloco 2</span>
-              <h3 class="card-title">Mão na massa clínica</h3>
-              <ul class="card-list">
-                <li>Coroas, pontes, implantes e ortodontia digital.</li>
-                <li>Softwares em destaque e ecossistemas típicos.</li>
-              </ul>
-            </article>
+                        <div class="glass-card presenters-card">
+                            <p class="presenters-title">Apresentadores</p>
+                            <div class="presenters-grid">
+                                <span class="tag">Ana Silva</span>
+                                <span class="tag">Zéca Souza</span>
+                                <span class="tag">Rayane Costa</span>
+                                <span class="tag">Gabriel Lima</span>
+                                <span class="tag">Amanda Alves</span>
+                                <span class="tag">Lucas Mendes</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <article class="card step-card" data-animate="card-stagger" data-delay="0.12">
-              <span class="card-tag">Bloco 3</span>
-              <h3 class="card-title">Julgando criticamente</h3>
-              <ul class="card-list">
-                <li>Prós, contras e limites vs métodos tradicionais.</li>
-                <li>Materiais: zircônia, dissilicato e resinas híbridas.</li>
-              </ul>
-            </article>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">1. Introdução e Linha do Tempo</h2>
+                        <p class="slide-subtitle">
+                            Do experimento nos anos 70 ao ecossistema digital atual.
+                        </p>
 
-            <article class="card step-card" data-animate="card-stagger" data-delay="0.18">
-              <span class="card-tag">Bloco 4</span>
-              <h3 class="card-title">Casos e futuro</h3>
-              <ul class="card-list">
-                <li>Três casos clínicos ilustrativos.</li>
-                <li>IA, impressão 3D e horizonte da odontologia digital.</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
+                        <div class="split-layout">
+                            <div class="split-text">
+                                <div class="grid-layout cols-1">
+                                    <div class="glass-card small-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-desktop icon-inline"></i>
+                                            CAD (Design)
+                                        </h3>
+                                        <p>Desenho virtual a partir de modelos 3D.</p>
+                                    </div>
+                                    <div class="glass-card small-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-printer-3d icon-inline"></i>
+                                            CAM (Manufatura)
+                                        </h3>
+                                        <p>Fabricação por fresagem ou impressão 3D.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Foto Histórica ]</span>
+                                </div>
+                            </div>
+                        </div>
 
-      <!-- SLIDE 2 - TIMELINE HISTÓRICA -->
-      <section
-        class="slide slide-2"
-        data-slide="2"
-        data-transition="timeline"
-        aria-labelledby="slide-2-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-2-title" class="slide-title">Do gesso ao digital</h2>
-            <p class="slide-subtitle">
-              Uma linha do tempo compacta mostrando a migração da era analógica ao CAD/CAM.
-            </p>
-          </header>
+                        <div class="timeline-container mt-2">
+                            <div class="timeline-line"></div>
 
-          <div class="timeline-layout">
-            <aside class="timeline-side" data-animate="image-parallax">
-              <figure class="timeline-figure">
-                <img
-                  src="assets/imgs/fresadora-cadcam.png"
-                  alt="Fresadora CAD/CAM em consultório odontológico"
-                  class="timeline-image"
-                  loading="lazy"
-                />
-                <figcaption class="timeline-caption">
-                  Da bancada de gesso às fresadoras CNC de alta precisão, integradas ao consultório.
-                </figcaption>
-              </figure>
-            </aside>
+                            <div class="timeline-step">
+                                <div class="dot"></div>
+                                <h4>Anos 70</h4>
+                                <p>F. Duret</p>
+                            </div>
 
-            <div class="timeline-main">
-              <div class="timeline-axis" aria-hidden="true">
-                <div class="timeline-axis-line"></div>
-              </div>
+                            <div class="timeline-step">
+                                <div class="dot"></div>
+                                <h4>1985</h4>
+                                <p>CEREC 1</p>
+                            </div>
 
-              <ol class="timeline-list">
-                <li
-                  class="timeline-item step-timeline"
-                  data-animate="timeline-ping"
-                >
-                  <div class="timeline-point"></div>
-                  <div class="timeline-content">
-                    <span class="timeline-year">Antes de 1980</span>
-                    <h3 class="timeline-title">Era analógica</h3>
-                    <p class="timeline-text">
-                      Moldagens em alginato/silicone, modelos em gesso e múltiplos passos manuais,
-                      com maior risco de distorções e erros cumulativos.
-                    </p>
-                  </div>
-                </li>
+                            <div class="timeline-step">
+                                <div class="dot"></div>
+                                <h4>2000+</h4>
+                                <p>Scanners</p>
+                            </div>
 
-                <li
-                  class="timeline-item step-timeline"
-                  data-animate="timeline-ping"
-                  data-delay="0.06"
-                >
-                  <div class="timeline-point"></div>
-                  <div class="timeline-content">
-                    <span class="timeline-year">Anos 1980</span>
-                    <h3 class="timeline-title">Primeiras soluções CAD/CAM</h3>
-                    <p class="timeline-text">
-                      A busca por restaurações cerâmicas mais resistentes e precisas impulsiona os primeiros
-                      sistemas computadorizados de desenho e fresagem.
-                    </p>
-                  </div>
-                </li>
+                            <div class="timeline-step">
+                                <div class="dot"></div>
+                                <h4>Hoje</h4>
+                                <p>Sistemas Abertos</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                <li
-                  class="timeline-item step-timeline"
-                  data-animate="timeline-ping"
-                  data-delay="0.12"
-                >
-                  <div class="timeline-point"></div>
-                  <div class="timeline-content">
-                    <span class="timeline-year">1985</span>
-                    <h3 class="timeline-title">CEREC 1 · marco chairside</h3>
-                    <p class="timeline-text">
-                      Werner H. Mörmann apresenta o CEREC 1, permitindo inlays cerâmicos em sessão única
-                      diretamente na clínica, inaugurando o conceito chairside.
-                    </p>
-                  </div>
-                </li>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">2. Fluxo Convencional vs Digital</h2>
 
-                <li
-                  class="timeline-item step-timeline"
-                  data-animate="timeline-ping"
-                  data-delay="0.18"
-                >
-                  <div class="timeline-point"></div>
-                  <div class="timeline-content">
-                    <span class="timeline-year">1990–2009</span>
-                    <h3 class="timeline-title">Escaneamento e CNC</h3>
-                    <p class="timeline-text">
-                      Consolidação de scanners intraorais, sistemas CAD de laboratório
-                      e fresadoras CNC, aproximando laboratório e consultório.
-                    </p>
-                  </div>
-                </li>
+                        <div class="split-layout mt-1">
+                            <div class="split-text">
+                                <div class="comparison-table">
+                                    <div
+                                        class="glass-card small-card"
+                                        style="border-left: 4px solid #f87171;"
+                                    >
+                                        <h3 style="color: #f87171;">
+                                            <i class="ph-bold ph-x-circle icon-inline"></i>
+                                            Analógico
+                                        </h3>
+                                        <p>
+                                            Elastômeros e gesso.
+                                            Erros cumulativos de expansão e desconforto ao paciente.
+                                        </p>
+                                    </div>
 
-                <li
-                  class="timeline-item step-timeline"
-                  data-animate="timeline-ping"
-                  data-delay="0.24"
-                >
-                  <div class="timeline-point"></div>
-                  <div class="timeline-content">
-                    <span class="timeline-year">2026</span>
-                    <h3 class="timeline-title">CAD/CAM como novo padrão</h3>
-                    <p class="timeline-text">
-                      Em consultórios modernos, mais de metade das restaurações fixas já envolvem fluxo digital,
-                      especialmente com zircônia e cerâmicas avançadas.
-                    </p>
-                  </div>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+                                    <div
+                                        class="glass-card small-card mt-1"
+                                        style="border-left: 4px solid #4ade80;"
+                                    >
+                                        <h3 style="color: #4ade80;">
+                                            <i class="ph-bold ph-check-circle icon-inline"></i>
+                                            Digital
+                                        </h3>
+                                        <p>
+                                            Arquivos STL/PLY.
+                                            Cópia perfeita sem distorção.
+                                            Rápido e higiênico.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-      <!-- SLIDE 3 - CONCEITOS BÁSICOS -->
-      <section
-        class="slide slide-3"
-        data-slide="3"
-        data-transition="wipe"
-        aria-labelledby="slide-3-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-3-title" class="slide-title">
-              Conceitos-chave: CAD e CAM
-            </h2>
-            <p class="slide-subtitle">
-              Como o fluxo digital traduz anatomia em restaurações previsíveis.
-            </p>
-          </header>
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Moldeira vs Scanner ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-          <div class="slide-grid grid-2">
-            <article class="card concept-card" data-animate="card-stagger">
-              <h3 class="card-title">CAD · Computer-Aided Design</h3>
-              <p class="card-text">
-                Criação de modelos 3D virtuais a partir de scans digitais, com controle anatômico,
-                oclusal e de contatos proximais em ambiente simulado.
-              </p>
-              <ul class="card-list">
-                <li>Ajustes em tempo real sobre o modelo 3D.</li>
-                <li>Simulação de contatos oclusais e guias funcionais.</li>
-                <li>Bibliotecas anatômicas e workflows guiados.</li>
-              </ul>
-            </article>
+                <section class="slide">
+                    <div class="slide-content center-content">
+                        <h2 class="slide-title">3. O Fluxo CAD/CAM na Prática</h2>
+                        <p class="slide-subtitle">
+                            Três etapas interdependentes. O erro inicial propaga-se até o final.
+                        </p>
 
-            <article class="card concept-card" data-animate="card-stagger" data-delay="0.1">
-              <h3 class="card-title">CAM · Computer-Aided Manufacturing</h3>
-              <p class="card-text">
-                Conversão do projeto virtual em uma peça física, via fresagem ou impressão 3D
-                em cerâmica, resina ou metais.
-              </p>
-              <ul class="card-list">
-                <li>Fresadoras CNC chairside ou de laboratório.</li>
-                <li>Impressoras 3D para guias cirúrgicos e provisórios.</li>
-                <li>Protocolos de sinterização, glaze e acabamento.</li>
-              </ul>
-            </article>
-          </div>
+                        <div class="png-slot wide-slot">
+                            <span>[ Visão do Consultório Digital ]</span>
+                        </div>
 
-          <div class="data-row">
-            <button
-              class="data-pill"
-              type="button"
-              data-highlight-trigger
-              data-highlight-text="Precisão marginal &lt; 50 μm"
-              data-animate="data-pill"
-            >
-              <span class="data-label">Precisão marginal</span>
-              <span
-                class="data-value"
-                data-counter-target="50"
-                data-counter-prefix="&lt; "
-                data-counter-suffix=" μm"
-              >
-                &lt; 0 μm
-              </span>
-              <span class="data-sub">Fluxos digitais bem calibrados</span>
-            </button>
+                        <div class="flow-diagram mt-2">
+                            <div class="flow-box glass-card small-card">
+                                <i class="ph-duotone ph-scan icon-main"></i>
+                                <h3>1. Aquisição</h3>
+                                <p>Scanner / TCFC</p>
+                            </div>
 
-            <div class="data-pill" data-animate="data-pill" data-delay="0.06">
-              <span class="data-label">Métodos tradicionais</span>
-              <span class="data-value">100–200 μm</span>
-              <span class="data-sub">Mais etapas manuais e distorções</span>
-            </div>
+                            <i class="ph-bold ph-caret-double-right flow-arrow"></i>
 
-            <div class="data-pill" data-animate="data-pill" data-delay="0.12">
-              <span class="data-label">Tempo total</span>
-              <span
-                class="data-value"
-                data-counter-target="70"
-                data-counter-prefix="-"
-                data-counter-suffix="%"
-              >
-                -0%
-              </span>
-              <span class="data-sub">Menos consultas e retrabalhos</span>
-            </div>
-          </div>
-        </div>
-      </section>
+                            <div class="flow-box glass-card small-card">
+                                <i class="ph-duotone ph-bezier-curve icon-main"></i>
+                                <h3>2. Desenho</h3>
+                                <p>Software CAD</p>
+                            </div>
 
-      <!-- SLIDE 4 - FLUXOGRAMA DIGITAL -->
-      <section
-        class="slide slide-4"
-        data-slide="4"
-        data-transition="flow"
-        aria-labelledby="slide-4-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-4-title" class="slide-title">Fluxo digital CAD/CAM</h2>
-            <p class="slide-subtitle">
-              Do scan à cimentação em um pipeline contínuo e rastreável.
-            </p>
-          </header>
+                            <i class="ph-bold ph-caret-double-right flow-arrow"></i>
 
-          <figure class="flow-bg-figure" data-animate="image-zoom">
-            <img
-              src="assets/imgs/fluxo-digital-diagrama.png"
-              alt="Diagrama de fluxo CAD/CAM odontológico"
-              class="flow-bg-image"
-              loading="lazy"
-            />
-          </figure>
+                            <div class="flow-box glass-card small-card">
+                                <i class="ph-duotone ph-gear icon-main"></i>
+                                <h3>3. Manufatura</h3>
+                                <p>Fresadora ou 3D</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-          <div class="flow-container" aria-label="Etapas do fluxo digital">
-            <article class="flow-step" data-animate="flow-step">
-              <h3 class="flow-step-title">1. Escaneamento intraoral</h3>
-              <p class="flow-step-text">Scanner óptico substitui moldes de silicone tradicionais.</p>
-              <span class="flow-tag">Saída: STL / PLY</span>
-            </article>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">4. Tipos de Sistemas</h2>
 
-            <div class="flow-arrow" data-animate="flow-arrow">
-              <span class="flow-arrow-icon">→</span>
-            </div>
+                        <div class="split-layout mt-1">
+                            <div class="split-text">
+                                <div class="grid-layout cols-1 gap-1">
+                                    <div class="glass-card compact-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-armchair icon-inline"></i>
+                                            Chairside
+                                        </h3>
+                                        <p>Restauração em sessão única no consultório.</p>
+                                    </div>
 
-            <article class="flow-step" data-animate="flow-step" data-delay="0.06">
-              <h3 class="flow-step-title">2. Importação no CAD</h3>
-              <p class="flow-step-text">
-                Análise oclusal e marginal, definição de limites e eixos de inserção.
-              </p>
-            </article>
+                                    <div class="glass-card compact-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-buildings icon-inline"></i>
+                                            Laboratório
+                                        </h3>
+                                        <p>Foco na terceirização e design complexo.</p>
+                                    </div>
 
-            <div class="flow-arrow" data-animate="flow-arrow" data-delay="0.12">
-              <span class="flow-arrow-icon">→</span>
-            </div>
+                                    <div class="glass-card compact-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-cloud-network icon-inline"></i>
+                                            Integrados (Abertos)
+                                        </h3>
+                                        <p>Comunicação híbrida via nuvem (STL livre).</p>
+                                    </div>
+                                </div>
+                            </div>
 
-            <article class="flow-step" data-animate="flow-step" data-delay="0.12">
-              <h3 class="flow-step-title">3. Design virtual</h3>
-              <p class="flow-step-text">
-                Coroa ou prótese com simulação estática e dinâmica da função.
-              </p>
-            </article>
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Foto: Equipamento Chairside ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <div class="flow-arrow" data-animate="flow-arrow" data-delay="0.18">
-              <span class="flow-arrow-icon">→</span>
-            </div>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">5. Softwares CAD (O Projeto)</h2>
 
-            <article class="flow-step" data-animate="flow-step" data-delay="0.18">
-              <h3 class="flow-step-title">4. Exportação para CAM</h3>
-              <p class="flow-step-text">
-                Fresagem ou impressão 3D conforme o material e a indicação clínica.
-              </p>
-            </article>
+                        <div class="split-layout mt-1">
+                            <div class="split-text">
+                                <ul class="visual-list">
+                                    <li>
+                                        <i class="ph-fill ph-check-circle"></i>
+                                        <strong>Bibliotecas:</strong> Dentes e componentes.
+                                    </li>
+                                    <li>
+                                        <i class="ph-fill ph-check-circle"></i>
+                                        <strong>Oclusão Automática:</strong> Ajuste milimétrico.
+                                    </li>
+                                    <li>
+                                        <i class="ph-fill ph-check-circle"></i>
+                                        <strong>Smile Design:</strong> Estética guiada por face.
+                                    </li>
+                                </ul>
+                            </div>
 
-            <div class="flow-arrow" data-animate="flow-arrow" data-delay="0.24">
-              <span class="flow-arrow-icon">→</span>
-            </div>
+                            <div class="split-media">
+                                <div class="png-slot full-slot mock-ui">
+                                    <span>[ Print do Exocad / 3Shape ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <article class="flow-step" data-animate="flow-step" data-delay="0.24">
-              <h3 class="flow-step-title">5. Acabamento e cimentação</h3>
-              <p class="flow-step-text">
-                Glaze, sinterização (quando necessário) e prova clínica com ajuste fino.
-              </p>
-            </article>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">6. Softwares CAM (A Fabricação)</h2>
 
-            <!-- SVG overlay para animação de linhas "se desenhando" -->
-            <svg class="flow-connections" viewBox="0 0 1000 220" aria-hidden="true">
-              <path
-                id="flow-line"
-                class="flow-line"
-                d="M40 110 L190 110 L340 110 L490 110 L640 110 L790 110"
-              ></path>
-              <defs>
-                <marker
-                  id="flow-dot"
-                  markerWidth="6"
-                  markerHeight="6"
-                  refX="3"
-                  refY="3"
-                >
-                  <circle cx="3" cy="3" r="3" class="flow-line-dot"></circle>
-                </marker>
-              </defs>
-            </svg>
-          </div>
-        </div>
-      </section>
+                        <div class="split-layout mt-1">
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Print: Nesting no Disco ]</span>
+                                </div>
+                            </div>
 
-      <!-- SLIDE 5 - APLICAÇÕES CLÍNICAS -->
-      <section
-        class="slide slide-5"
-        data-slide="5"
-        data-transition="wipe"
-        aria-labelledby="slide-5-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-5-title" class="slide-title">Aplicações clínicas principais</h2>
-            <p class="slide-subtitle">
-              Onde o CAD/CAM muda o jogo no dia a dia assistencial.
-            </p>
-          </header>
+                            <div class="split-text">
+                                <div
+                                    class="glass-card small-card mb-1"
+                                    style="border-left: 4px solid var(--accent);"
+                                >
+                                    <h3>
+                                        <i class="ph-duotone ph-cube icon-inline"></i>
+                                        CAM Subtrativo
+                                    </h3>
+                                    <p>
+                                        Nesting no bloco.
+                                        Define brocas, refrigeração e passes.
+                                    </p>
+                                </div>
 
-          <div class="slide-grid grid-3">
-            <article class="card card-compact" data-animate="card-stagger">
-              <span class="card-tag">Sobrevivência 5 anos</span>
-              <h3 class="card-title">Coroas unitárias</h3>
-              <p class="card-text">
-                Restaurações monolíticas em zircônia com taxas de sobrevivência em torno de
-                95–100% em 5 anos em diferentes estudos clínicos.
-              </p>
-            </article>
+                                <div
+                                    class="glass-card small-card"
+                                    style="border-left: 4px solid #4ade80;"
+                                >
+                                    <h3>
+                                        <i class="ph-duotone ph-layers icon-inline"></i>
+                                        CAM Aditivo
+                                    </h3>
+                                    <p>
+                                        Slicing. Gera suportes estruturais e tempo de cura.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <article class="card card-compact" data-animate="card-stagger" data-delay="0.06">
-              <span class="card-tag">Pontes 3–6 elementos</span>
-              <h3 class="card-title">Pontes fixas</h3>
-              <p class="card-text">
-                Próteses de 3–6 elementos com sobrevivência aproximada de 89–91% em 5 anos,
-                quando bem indicadas e cimentadas.
-              </p>
-            </article>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">7. Principais Aplicações Clínicas</h2>
 
-            <article class="card card-compact" data-animate="card-stagger" data-delay="0.12">
-              <span class="card-tag">Guia cirúrgico</span>
-              <h3 class="card-title">Implantes</h3>
-              <p class="card-text">
-                Guias cirúrgicos e pilares personalizados com desvios geralmente inferiores a 1 mm,
-                aumentando previsibilidade e segurança cirúrgica.
-              </p>
-            </article>
+                        <div class="grid-layout cols-3 mt-1">
+                            <div class="glass-card card-with-image">
+                                <div class="png-slot card-img-slot">
+                                    <span>[ Foto Prótese ]</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Prótese</h3>
+                                    <p>Pilares personalizados e coroas.</p>
+                                </div>
+                            </div>
 
-            <article class="card card-compact" data-animate="card-stagger" data-delay="0.18">
-              <span class="card-tag">Ortodontia</span>
-              <h3 class="card-title">Ortodontia digital</h3>
-              <p class="card-text">
-                Alinhadores transparentes e brackets indiretos personalizados, permitindo
-                tratamentos 20–30% mais rápidos com alta precisão de posicionamento.
-              </p>
-            </article>
+                            <div class="glass-card card-with-image">
+                                <div class="png-slot card-img-slot">
+                                    <span>[ Foto Guia ]</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Cirurgia Guiada</h3>
+                                    <p>Posicionamento 3D perfeito.</p>
+                                </div>
+                            </div>
 
-            <article class="card card-compact" data-animate="card-stagger" data-delay="0.24">
-              <span class="card-tag">Planejamento</span>
-              <h3 class="card-title">Guias e mockups</h3>
-              <p class="card-text">
-                Guias de preparo, mockups de sorriso e prototipagem rápida
-                para planejamento estético e funcional centrado no paciente.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
+                            <div class="glass-card card-with-image">
+                                <div class="png-slot card-img-slot">
+                                    <span>[ Foto Alinhador ]</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Ortodontia</h3>
+                                    <p>Alinhadores transparentes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-      <!-- SLIDE 6 - SOFTwares EM DESTAQUE -->
-      <section
-        class="slide slide-6"
-        data-slide="6"
-        data-transition="wipe"
-        aria-labelledby="slide-6-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-6-title" class="slide-title">Softwares CAD/CAM em destaque</h2>
-            <p class="slide-subtitle">
-              Três ecossistemas que você provavelmente encontrará na prática.
-            </p>
-          </header>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">8. Vantagens e Limitações</h2>
 
-          <div class="slide-grid grid-3">
-            <article class="card" data-animate="card-stagger">
-              <span class="card-tag">Laboratório</span>
-              <h3 class="card-title">Exocad</h3>
-              <p class="card-text">
-                Plataforma flexível, forte em implantes e casos complexos,
-                voltada para laboratórios e usuários avançados.
-              </p>
-            </article>
+                        <div class="split-layout mt-1">
+                            <div class="split-text">
+                                <div
+                                    class="glass-card small-card mb-1"
+                                    style="border-color: #4ade80; background: rgba(74,222,128,0.05);"
+                                >
+                                    <h3 style="color: #4ade80;">
+                                        <i class="ph-fill ph-thumbs-up icon-inline"></i>
+                                        Vantagens
+                                    </h3>
+                                    <p>
+                                        Alta precisão, sessão única, conforto e armazenamento eterno.
+                                    </p>
+                                </div>
 
-            <article class="card" data-animate="card-stagger" data-delay="0.06">
-              <span class="card-tag">Clínica &amp; orto</span>
-              <h3 class="card-title">3Shape · Dental System</h3>
-              <p class="card-text">
-                Interface guiada e amigável, adaptada ao uso clínico/chairside
-                e ortodontia, integrada ao ecossistema TRIOS.
-              </p>
-            </article>
+                                <div
+                                    class="glass-card small-card"
+                                    style="border-color: #f87171; background: rgba(248,113,113,0.05);"
+                                >
+                                    <h3 style="color: #f87171;">
+                                        <i class="ph-fill ph-thumbs-down icon-inline"></i>
+                                        Desafios
+                                    </h3>
+                                    <p>
+                                        Custo alto, curva de aprendizado e limitações em arcos totais.
+                                    </p>
+                                </div>
+                            </div>
 
-            <article class="card" data-animate="card-stagger" data-delay="0.12">
-              <span class="card-tag">Chairside</span>
-              <h3 class="card-title">CEREC · Dentsply Sirona</h3>
-              <p class="card-text">
-                Sistema chairside completo para restaurações em sessão única,
-                com fluxo integrado e ecossistema mais fechado.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Gráfico/Foto Comparativa ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-      <!-- SLIDE 7 - TABELA COMPARATIVA -->
-      <section
-        class="slide slide-7"
-        data-slide="7"
-        data-transition="data"
-        aria-labelledby="slide-7-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-7-title" class="slide-title">Comparando ecossistemas CAD/CAM</h2>
-            <p class="slide-subtitle">
-              Cada software com seu foco — o essencial é alinhar com seu perfil de serviço.
-            </p>
-          </header>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">9. Integração de Tecnologias</h2>
+                        <p class="slide-subtitle">
+                            A superposição de dados é o coração do ecossistema.
+                        </p>
 
-          <div class="table-wrapper" data-animate="table-reveal">
-            <table class="compare-table">
-              <thead>
-                <tr>
-                  <th>Software</th>
-                  <th>Facilidade de uso</th>
-                  <th>Aplicações principais</th>
-                  <th>Compatibilidade</th>
-                  <th>Faixa de preço</th>
-                  <th>Adoção</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Exocad</td>
-                  <td>Intermediária / avançada</td>
-                  <td>Implantes complexos, reabilitações extensas, laboratório</td>
-                  <td>Sistema aberto, alta compatibilidade com scanners e fresadoras</td>
-                  <td>Média–alta (licenças modulares)</td>
-                  <td>Alta em laboratórios e centros de planejamento</td>
-                </tr>
-                <tr>
-                  <td>3Shape Dental System</td>
-                  <td>Alta, interface guiada</td>
-                  <td>Clínica, ortodontia, próteses fixas e removíveis</td>
-                  <td>Integração forte com TRIOS; boa compatibilidade com outros sistemas</td>
-                  <td>Alta (pacotes clínicos completos)</td>
-                  <td>Ampla em clínicas com fluxo digital</td>
-                </tr>
-                <tr>
-                  <td>CEREC</td>
-                  <td>Alta para uso chairside</td>
-                  <td>Coroas e inlays/onlays em sessão única</td>
-                  <td>Ecossistema mais fechado (scanner + fresadora próprios)</td>
-                  <td>Alta (investimento em sistema integrado)</td>
-                  <td>Forte em consultórios focados em “same-day dentistry”</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+                        <div class="split-layout mt-1">
+                            <div class="split-text center-content">
+                                <div class="venn-diagram">
+                                    <div class="venn-circle venn-1">
+                                        <h4>TCFC</h4>
+                                        <span>(Osso)</span>
+                                    </div>
+                                    <div class="venn-circle venn-2">
+                                        <h4>Scanner</h4>
+                                        <span>(STL)</span>
+                                    </div>
+                                    <div class="venn-circle venn-3">
+                                        <h4>Face</h4>
+                                        <span>(Foto 3D)</span>
+                                    </div>
+                                    <div class="venn-center pulse-anim">Guiada</div>
+                                </div>
+                            </div>
 
-      <!-- SLIDE 8 - PRÓS E CONTRAS -->
-      <section
-        class="slide slide-8"
-        data-slide="8"
-        data-transition="data"
-        aria-labelledby="slide-8-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-8-title" class="slide-title">Vale a pena? Prós e contras</h2>
-            <p class="slide-subtitle">
-              O balanço entre precisão, custo e curva de aprendizado.
-            </p>
-          </header>
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Tela de Planejamento Integrado ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-          <div class="slide-grid grid-2">
-            <article class="card card-advantages" data-animate="card-stagger">
-              <h3 class="card-title">Vantagens do CAD/CAM</h3>
-              <ul class="card-list check-list">
-                <li data-animate="check-item">Precisão marginal &lt; 50 μm em fluxos bem ajustados.</li>
-                <li data-animate="check-item" data-delay="0.04">
-                  Redução de 50–70% no tempo total de tratamento.
-                </li>
-                <li data-animate="check-item" data-delay="0.08">
-                  Menos desconforto (sem moldes volumosos de silicone).
-                </li>
-                <li data-animate="check-item" data-delay="0.12">
-                  Alta satisfação do paciente (&gt; 90% relatam experiência positiva).
-                </li>
-              </ul>
-            </article>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">10. Impacto na Odontologia</h2>
 
-            <article class="card card-disadvantages" data-animate="card-stagger" data-delay="0.08">
-              <h3 class="card-title">Desvantagens / desafios</h3>
-              <ul class="card-list">
-                <li>Investimento inicial elevado em equipamentos e softwares.</li>
-                <li>Curva de aprendizado para equipe clínica e laboratório.</li>
-                <li>Dependência de energia, conectividade e suporte técnico.</li>
-                <li>
-                  Risco de chipping em determinadas cerâmicas, geralmente manejável sem remoção total.
-                </li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
+                        <div class="split-layout mt-1">
+                            <div class="split-text">
+                                <div class="grid-layout cols-1 gap-1">
+                                    <div class="glass-card small-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-star icon-inline"></i>
+                                            Qualidade
+                                        </h3>
+                                        <p>Sobrevivência clínica superior e padronizada.</p>
+                                    </div>
 
-      <!-- SLIDE 9 - MATERIAIS -->
-      <section
-        class="slide slide-9"
-        data-slide="9"
-        data-transition="wipe"
-        aria-labelledby="slide-9-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-9-title" class="slide-title">
-              Materiais no universo CAD/CAM
-            </h2>
-            <p class="slide-subtitle">
-              Escolher o material adequado é tão crítico quanto dominar o software.
-            </p>
-          </header>
+                                    <div class="glass-card small-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-globe-hemisphere-west icon-inline"></i>
+                                            Teleodontologia
+                                        </h3>
+                                        <p>Design center remoto operando globalmente.</p>
+                                    </div>
 
-          <div class="slide-grid grid-3">
-            <article class="card" data-animate="card-stagger">
-              <h3 class="card-title">Zircônia (ZrO₂)</h3>
-              <p class="card-text">
-                Alta resistência flexural, frequentemente na faixa de 900–1200 MPa,
-                ideal para região posterior e pilares sobre implantes.
-              </p>
-              <p class="material-note">
-                Sobrevivência em 5 anos muito elevada em diversos estudos clínicos.
-              </p>
-            </article>
+                                    <div class="glass-card small-card">
+                                        <h3>
+                                            <i class="ph-duotone ph-student icon-inline"></i>
+                                            Ensino
+                                        </h3>
+                                        <p>Integração digital nos laboratórios acadêmicos.</p>
+                                    </div>
+                                </div>
+                            </div>
 
-            <article class="card" data-animate="card-stagger" data-delay="0.06">
-              <h3 class="card-title">Dissilicato de lítio</h3>
-              <p class="card-text">
-                Cerâmica vítrea com alta translucidez e estética, excelente para
-                coroas anteriores, facetas e onlays estéticos.
-              </p>
-              <p class="material-note">
-                Equilíbrio robusto entre estética e resistência mecânica.
-              </p>
-            </article>
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Foto: Ensino / Clínica ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <article class="card" data-animate="card-stagger" data-delay="0.12">
-              <h3 class="card-title">Resinas compostas híbridas</h3>
-              <p class="card-text">
-                Indicações relevantes para provisórios e alguns casos definitivos,
-                com módulo elástico próximo ao da dentina.
-              </p>
-              <p class="material-note">
-                Boa opção para abordagens transitórias ou minimamente invasivas.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">11. Casos Clínicos</h2>
+                        
+                        <div class="split-layout mt-1">
+                            
+                            <div class="split-media" style="flex: 1.5;">
+                                <div class="glass-card" style="padding: 0; overflow: hidden; height: 100%; min-height: 320px; display: flex; background: #000;">
+                                    <video id="videoCaso" width="100%" height="100%" style="object-fit: cover; border-radius: 16px;" controls>
+                                        <source src="assets/videos/caso-clinico.mp4" type="video/mp4">
+                                        Seu navegador não suporta a tag de vídeo.
+                                    </video>
+                                </div>
+                            </div>
 
-      <!-- SLIDE 10 - CAD/CAM VS TRADICIONAL -->
-      <section
-        class="slide slide-10"
-        data-slide="10"
-        data-transition="data"
-        aria-labelledby="slide-10-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-10-title" class="slide-title">
-              CAD/CAM vs métodos tradicionais
-            </h2>
-            <p class="slide-subtitle">
-              Uma “luta de cards” entre o fluxo digital e o analógico.
-            </p>
-          </header>
+                            <div class="split-text" style="flex: 1;">
+                                <div class="grid-layout cols-1 gap-1">
+                                    <div class="glass-card compact-card" style="border-left: 4px solid var(--accent);">
+                                        <h3><i class="ph-duotone ph-tooth icon-inline"></i> 1. Chairside</h3>
+                                        <p>Coroa de molar fresada e cimentada em apenas 2 horas.</p>
+                                    </div>
+                                    <div class="glass-card compact-card" style="border-left: 4px solid var(--accent);">
+                                        <h3><i class="ph-duotone ph-intersect icon-inline"></i> 2. Fotogrametria</h3>
+                                        <p>Barra sobre implante com passividade perfeita via fluxo digital.</p>
+                                    </div>
+                                    <div class="glass-card compact-card" style="border-left: 4px solid var(--accent);">
+                                        <h3><i class="ph-duotone ph-smiley icon-inline"></i> 3. Odontopediatria</h3>
+                                        <p>O escaneamento 3D elimina a moldeira assustadora.</p>
+                                    </div>
+                                </div>
+                            </div>
 
-          <div class="vs-layout">
-            <article class="vs-card" data-animate="card-stagger">
-              <h3 class="vs-title">Fluxo CAD/CAM</h3>
-              <ul class="vs-list">
-                <li>
-                  <span class="vs-metric-label">Precisão marginal</span>
-                  <span
-                    class="vs-metric-value"
-                    data-counter-target="50"
-                    data-counter-prefix="&lt; "
-                    data-counter-suffix=" μm"
-                  >
-                    &lt; 0 μm
-                  </span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Tempo total</span>
-                  <span class="vs-metric-value">1–2 visitas</span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Satisfação do paciente</span>
-                  <span
-                    class="vs-metric-value"
-                    data-counter-target="90"
-                    data-counter-suffix="%"
-                  >
-                    0%
-                  </span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Sobrevivência em 5 anos</span>
-                  <span class="vs-metric-value">~90–98%</span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Custo inicial</span>
-                  <span class="vs-metric-value">Alto (equipamentos e softwares)</span>
-                </li>
-              </ul>
-            </article>
+                        </div>
+                    </div>
+                </section>
 
-            <div class="vs-center" aria-hidden="true">
-              <div class="vs-center-orbit">
-                <span class="vs-center-label">VS</span>
-              </div>
+                <section class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">12. Conclusão e Perspectivas</h2>
+
+                        <div class="split-layout mt-1">
+                            <div
+                                class="split-text glass-card"
+                                style="padding: 2.5rem;"
+                            >
+                                <i
+                                    class="ph-duotone ph-brain pulse-anim icon-main"
+                                    style="font-size: 4rem;"
+                                ></i>
+                                <h3>O Futuro é a IA e Novos Materiais</h3>
+                                <p style="font-size: 1.1rem; margin-top: 1rem;">
+                                    A Inteligência Artificial desenhará próteses instantaneamente.
+                                    No entanto,
+                                    <strong>o cirurgião-dentista será sempre o maestro</strong>
+                                    responsável pelo planejamento e diagnóstico biológico.
+                                </p>
+                            </div>
+
+                            <div class="split-media">
+                                <div class="png-slot full-slot">
+                                    <span>[ Foto: Odontologia do Futuro ]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <article class="vs-card" data-animate="card-stagger" data-delay="0.08">
-              <h3 class="vs-title">Métodos tradicionais</h3>
-              <ul class="vs-list">
-                <li>
-                  <span class="vs-metric-label">Precisão marginal</span>
-                  <span class="vs-metric-value">100–200 μm</span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Tempo total</span>
-                  <span class="vs-metric-value">3–4 visitas</span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Satisfação do paciente</span>
-                  <span class="vs-metric-value">~80–85%</span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Sobrevivência em 5 anos</span>
-                  <span class="vs-metric-value">
-                    Alta, porém com maior necessidade de retrabalho.
-                  </span>
-                </li>
-                <li>
-                  <span class="vs-metric-label">Custo inicial</span>
-                  <span class="vs-metric-value">Baixo (infraestrutura consolidada)</span>
-                </li>
-              </ul>
-            </article>
-          </div>
         </div>
-      </section>
 
-      <!-- SLIDE 11 - CASO CLÍNICO 1 -->
-      <section
-        class="slide slide-11"
-        data-slide="11"
-        data-transition="wipe"
-        aria-labelledby="slide-11-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-11-title" class="slide-title">
-              Caso 1 · Coroa posterior em uma sessão
-            </h2>
-            <p class="slide-subtitle">
-              Fluxo chairside completo em um molar fraturado.
-            </p>
-          </header>
+        <div class="controls-wrapper">
+            <div class="controls-panel">
+                <button id="prevBtn" class="nav-btn">
+                    <i class="ph-bold ph-caret-left"></i>
+                </button>
 
-          <article class="case-layout" data-animate="case-reveal">
-            <figure class="case-media">
-              <img
-                src="assets/imgs/casos-before-after.png"
-                alt="Coroa posterior CAD/CAM antes e depois"
-                class="case-image"
-                loading="lazy"
-              />
-            </figure>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
 
-            <div class="case-content">
-              <div class="case-meta">
-                <p>
-                  <span class="case-label">Paciente:</span>
-                  45 anos, molar inferior fraturado.
-                </p>
-                <p>
-                  <span class="case-label">Problema:</span>
-                  Dor à mastigação e restauração extensa fraturada.
-                </p>
-              </div>
-
-              <section class="case-section">
-                <h3 class="case-section-title">Plano digital</h3>
-                <ul class="case-list">
-                  <li>Escaneamento intraoral completo da arcada inferior.</li>
-                  <li>Design virtual de coroa monolítica em zircônia.</li>
-                  <li>Ajustes oclusais realizados no modelo digital.</li>
-                </ul>
-              </section>
-
-              <section class="case-section">
-                <h3 class="case-section-title">Resultado</h3>
-                <ul class="case-list">
-                  <li>Fresagem chairside e cimentação na mesma sessão.</li>
-                  <li>Redução de 2–3 consultas para apenas 1 visita.</li>
-                  <li>Alta satisfação e retorno rápido à função mastigatória.</li>
-                </ul>
-              </section>
+                <button id="nextBtn" class="nav-btn">
+                    <i class="ph-bold ph-caret-right"></i>
+                </button>
             </div>
-          </article>
         </div>
-      </section>
-
-      <!-- SLIDE 12 - CASO CLÍNICO 2 -->
-      <section
-        class="slide slide-12"
-        data-slide="12"
-        data-transition="wipe"
-        aria-labelledby="slide-12-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-12-title" class="slide-title">
-              Caso 2 · Ponte implante-suportada com guia
-            </h2>
-            <p class="slide-subtitle">
-              Integração de planejamento 3D, guia cirúrgico e prótese.
-            </p>
-          </header>
-
-          <article class="case-layout" data-animate="case-reveal">
-            <figure class="case-media">
-              <img
-                src="assets/imgs/scanner-intraoral.png"
-                alt="Scanner intraoral utilizado no planejamento de implantes"
-                class="case-image"
-                loading="lazy"
-              />
-            </figure>
-
-            <div class="case-content">
-              <div class="case-meta">
-                <p>
-                  <span class="case-label">Paciente:</span>
-                  60 anos, ausência de 3 elementos posteriores.
-                </p>
-                <p>
-                  <span class="case-label">Problema:</span>
-                  Espaço protético limitado e anatomia óssea delicada.
-                </p>
-              </div>
-
-              <section class="case-section">
-                <h3 class="case-section-title">Plano digital</h3>
-                <ul class="case-list">
-                  <li>Tomografia e scan intraoral integrados em software 3D.</li>
-                  <li>Planejamento virtual da posição ideal dos implantes.</li>
-                  <li>Confecção de guia cirúrgico CAD/CAM personalizado.</li>
-                </ul>
-              </section>
-
-              <section class="case-section">
-                <h3 class="case-section-title">Resultado</h3>
-                <ul class="case-list">
-                  <li>Desvios de posicionamento &lt; 1 mm em relação ao planejamento.</li>
-                  <li>Ponte de 3 elementos com mínimo ajuste oclusal.</li>
-                  <li>Tempo cirúrgico reduzido e pós-operatório mais previsível.</li>
-                </ul>
-              </section>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- SLIDE 13 - CASO CLÍNICO 3 -->
-      <section
-        class="slide slide-13"
-        data-slide="13"
-        data-transition="wipe"
-        aria-labelledby="slide-13-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-13-title" class="slide-title">
-              Caso 3 · Ortodontia com alinhadores digitais
-            </h2>
-            <p class="slide-subtitle">
-              Tratamento guiado por software, do planejamento ao set final.
-            </p>
-          </header>
-
-          <article class="case-layout" data-animate="case-reveal">
-            <figure class="case-media">
-              <img
-                src="assets/imgs/alinhadores-clear.png"
-                alt="Alinhadores transparentes confeccionados via CAD/CAM"
-                class="case-image"
-                loading="lazy"
-              />
-            </figure>
-
-            <div class="case-content">
-              <div class="case-meta">
-                <p>
-                  <span class="case-label">Paciente:</span>
-                  28 anos, apinhamento anterior moderado.
-                </p>
-                <p>
-                  <span class="case-label">Problema:</span>
-                  Demanda estética e busca por tratamento discreto.
-                </p>
-              </div>
-
-              <section class="case-section">
-                <h3 class="case-section-title">Plano digital</h3>
-                <ul class="case-list">
-                  <li>Escaneamento intraoral e planejamento virtual do setup final.</li>
-                  <li>Sequência de alinhadores com movimentos controlados.</li>
-                  <li>Checkpoints digitais a cada 6–8 semanas.</li>
-                </ul>
-              </section>
-
-              <section class="case-section">
-                <h3 class="case-section-title">Resultado</h3>
-                <ul class="case-list">
-                  <li>
-                    Tratamento estimado 20–30% mais rápido que técnicas convencionais.
-                  </li>
-                  <li>Alto controle de posicionamento de cada dente.</li>
-                  <li>Experiência estética e confortável para o paciente.</li>
-                </ul>
-              </section>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- SLIDE 14 - FUTURO DA ODONTOLOGIA DIGITAL -->
-      <section
-        class="slide slide-14"
-        data-slide="14"
-        data-transition="future"
-        aria-labelledby="slide-14-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-14-title" class="slide-title">
-              Futuro da odontologia digital
-            </h2>
-            <p class="slide-subtitle">
-              O que esperar até 2030 e além em IA, materiais e integração.
-            </p>
-          </header>
-
-          <div class="future-layout">
-            <figure class="future-media" data-animate="image-zoom">
-              <img
-                src="assets/imgs/ia-futuro.png"
-                alt="Interface de inteligência artificial aplicada à odontologia"
-                class="future-image"
-                loading="lazy"
-              />
-            </figure>
-
-            <div class="future-cards">
-              <article class="future-card" data-animate="future-card">
-                <h3 class="future-title">IA no design automatizado</h3>
-                <p class="future-text">
-                  Algoritmos propondo desenhos de coroas, pontes e planos de tratamento
-                  com base em grandes bases de dados e simulações preditivas.
-                </p>
-              </article>
-
-              <article class="future-card" data-animate="future-card" data-delay="0.06">
-                <h3 class="future-title">Impressão 3D multimaterial</h3>
-                <p class="future-text">
-                  Estruturas com diferentes propriedades mecânicas e estéticas
-                  em uma única peça, incluindo bioimpressão e scaffolds personalizados.
-                </p>
-              </article>
-
-              <article class="future-card" data-animate="future-card" data-delay="0.12">
-                <h3 class="future-title">Digital como novo padrão</h3>
-                <p class="future-text">
-                  Projeções indicam a maioria das clínicas com algum grau de fluxo digital
-                  integrado até 2030, guiadas por demanda estética e eficiência.
-                </p>
-              </article>
-            </div>
-          </div>
-
-          <div class="future-cta" data-animate="future-cta">
-            <p>
-              Mais do que “ter um scanner”, a pergunta passa a ser:
-              <span class="future-cta-emphasis">
-                como integrar dados, IA e biomateriais de forma ética e centrada no paciente?
-              </span>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 15 - ENCERRAMENTO -->
-      <section
-        class="slide slide-15 slide-type-outro"
-        data-slide="15"
-        data-transition="particles-out"
-        aria-labelledby="slide-15-title"
-      >
-        <div class="slide-inner">
-          <header class="slide-header">
-            <h2 id="slide-15-title" class="slide-title">
-              Encerrando: CAD/CAM como aliado
-            </h2>
-            <p class="slide-subtitle">
-              Tecnologia a serviço do raciocínio clínico, não como fim em si mesma.
-            </p>
-          </header>
-
-          <div class="slide-grid grid-2">
-            <article class="card" data-animate="card-stagger">
-              <h3 class="card-title">Ideias-chave</h3>
-              <ul class="card-list">
-                <li>Fluxo digital reduz tempo e aumenta previsibilidade clínica.</li>
-                <li>Softwares e materiais devem seguir o perfil da clínica.</li>
-                <li>O olhar crítico do clínico permanece insubstituível.</li>
-              </ul>
-            </article>
-
-            <article class="card" data-animate="card-stagger" data-delay="0.08">
-              <h3 class="card-title">Para levar pra casa</h3>
-              <ul class="card-list">
-                <li>Explore um software por vez, de forma estruturada.</li>
-                <li>Comece por indicações simples, como coroas unitárias.</li>
-                <li>Construa parcerias sólidas com laboratório digital.</li>
-              </ul>
-            </article>
-          </div>
-
-          <div class="end-cta" data-animate="end-cta">
-            <p class="end-cta-text">
-              Obrigado! · Perguntas, casos e experiências de vocês são muito bem-vindos.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
 
-    <!-- Footer com instruções de navegação -->
-    <footer class="nav-footer" aria-label="Instruções de navegação">
-      <div class="nav-footer-inner">
-        <div class="nav-footer-keys">
-          <div class="key-hint">
-            <span class="keycap">←</span>
-            <span class="keycap">→</span>
-            <span class="key-label">Navegar slides</span>
-          </div>
-          <div class="key-hint">
-            <span class="keycap">↑</span>
-            <span class="keycap">↓</span>
-            <span class="key-label">Pular blocos</span>
-          </div>
-          <div class="key-hint">
-            <span class="keycap">Espaço</span>
-            <span class="key-label">Avançar</span>
-          </div>
-          <div class="key-hint">
-            <span class="keycap">D</span>
-            <span class="key-label">Destacar dado</span>
-          </div>
-        </div>
-
-        <div class="nav-footer-mobile">
-          <button
-            class="nav-btn nav-btn-prev"
-            type="button"
-            aria-label="Slide anterior"
-            data-nav-prev
-          >
-            <i data-lucide="arrow-left"></i>
-          </button>
-          <button
-            class="nav-btn nav-btn-next"
-            type="button"
-            aria-label="Próximo slide"
-            data-nav-next
-          >
-            <i data-lucide="arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script src="js/app.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>
