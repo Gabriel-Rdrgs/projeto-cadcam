@@ -676,3 +676,270 @@ body {
         transform: translateY(0);
     }
 }
+
+/* =========================================
+   PARTICLE CANVAS
+   ========================================= */
+#particles-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   SLIDE COUNTER
+   ========================================= */
+.slide-counter {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 600;
+    min-width: 52px;
+    text-align: center;
+    letter-spacing: 0.06em;
+}
+
+/* =========================================
+   NEW KEYFRAMES
+   ========================================= */
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 8px var(--accent-glow); }
+    50% { box-shadow: 0 0 24px var(--accent-glow), 0 0 48px rgba(56, 189, 248, 0.15); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-25px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes borderFlicker {
+    0%, 100% { border-color: var(--glass-border); }
+    50% { border-color: rgba(56, 189, 248, 0.5); }
+}
+
+/* =========================================
+   SHIMMER TITLE (optional class)
+   ========================================= */
+.shimmer-title {
+    background: linear-gradient(90deg, #fff 0%, #38bdf8 35%, #a78bfa 65%, #fff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 5s linear infinite;
+}
+
+/* =========================================
+   ENHANCED CARD HOVER
+   ========================================= */
+.glass-card:hover {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.18), 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+
+/* =========================================
+   CASES GRID — SLIDE 11
+   ========================================= */
+.cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    margin-top: 0.5rem;
+}
+
+.case-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.case-img-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.case-img {
+    height: 145px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.case-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--accent);
+    color: #0f172a;
+    font-size: 0.62rem;
+    font-weight: 800;
+    padding: 0.18rem 0.55rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.case-body {
+    padding: 0.9rem 1rem;
+    flex: 1;
+}
+
+.case-body h3 {
+    font-size: 0.92rem;
+    margin-bottom: 0.35rem;
+    color: var(--text-main);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.case-body p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+/* =========================================
+   CONCLUSÃO SLIDE — SLIDE 12
+   ========================================= */
+.slide-conclusion {
+    background: linear-gradient(145deg, #020c1b 0%, #0a1628 55%, #0d2244 100%) !important;
+}
+
+.slide-conclusion::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 68% 50%, rgba(37, 99, 235, 0.22), transparent 62%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.slide-conclusion .slide-content {
+    position: relative;
+    z-index: 1;
+}
+
+.conclusion-title {
+    font-size: 3.2rem !important;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    background: -webkit-linear-gradient(30deg, #ffffff 30%, #93c5fd 80%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.conclusion-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+}
+
+.conclusion-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateX(-22px);
+}
+
+.conclusion-list li i {
+    color: #60a5fa;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.slide.active.slide-conclusion .conclusion-list li {
+    animation: slideInLeft 0.5s forwards;
+}
+
+.slide.active.slide-conclusion .conclusion-list li:nth-child(1) { animation-delay: 0.25s; }
+.slide.active.slide-conclusion .conclusion-list li:nth-child(2) { animation-delay: 0.4s; }
+.slide.active.slide-conclusion .conclusion-list li:nth-child(3) { animation-delay: 0.55s; }
+.slide.active.slide-conclusion .conclusion-list li:nth-child(4) { animation-delay: 0.7s; }
+.slide.active.slide-conclusion .conclusion-list li:nth-child(5) { animation-delay: 0.85s; }
+
+/* Dot grid decorations (used in conclusion) */
+.dot-grid {
+    position: absolute;
+    display: grid;
+    gap: 5px;
+    opacity: 0.22;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.dot-grid span {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #60a5fa;
+    display: block;
+}
+
+/* =========================================
+   ENHANCED TIMELINE
+   ========================================= */
+.timeline-step .dot {
+    animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+.slide.active .timeline-step:nth-child(3) { animation-delay: 0.15s; }
+.slide.active .timeline-step:nth-child(4) { animation-delay: 0.3s; }
+.slide.active .timeline-step:nth-child(5) { animation-delay: 0.45s; }
+.slide.active .timeline-step:nth-child(6) { animation-delay: 0.6s; }
+
+/* =========================================
+   FLOW ARROWS ENHANCED
+   ========================================= */
+.flow-arrow {
+    color: var(--accent) !important;
+    opacity: 0.8;
+    animation: pulse 1.8s ease-in-out infinite;
+}
+
+/* =========================================
+   VISUAL LIST STAGGER (more items)
+   ========================================= */
+.slide.active .visual-list li:nth-child(1) { animation-delay: 0.2s; }
+.slide.active .visual-list li:nth-child(2) { animation-delay: 0.35s; }
+.slide.active .visual-list li:nth-child(3) { animation-delay: 0.5s; }
+.slide.active .visual-list li:nth-child(4) { animation-delay: 0.65s; }
+
+/* GLASS CARD STAGGER (more items) */
+.slide.active .glass-card:nth-child(4) { animation-delay: 0.5s; }
+.slide.active .glass-card:nth-child(5) { animation-delay: 0.6s; }
+.slide.active .glass-card:nth-child(6) { animation-delay: 0.7s; }
+
+/* TAG pulse */
+.tag {
+    animation: borderFlicker 3.5s ease-in-out infinite;
+}
+
+/* VENN hover */
+.venn-circle {
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.venn-circle:hover {
+    transform: scale(1.06) !important;
+}

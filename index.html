@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <canvas id="particles-canvas"></canvas>
     <div class="bg-grid"></div>
 
     <main class="app-layout">
@@ -478,64 +479,81 @@
                 <section class="slide">
                     <div class="slide-content">
                         <h2 class="slide-title">11. Casos Clínicos</h2>
-                        
-                        <div class="split-layout mt-1">
-                            
-                            <div class="split-media" style="flex: 1.5;">
-                                <div class="glass-card" style="padding: 0; overflow: hidden; height: 100%; min-height: 320px; display: flex; background: #000;">
-                                    <video id="videoCaso" width="100%" height="100%" style="object-fit: cover; border-radius: 16px;" controls>
-                                        <source src="assets/videos/caso-clinico.mp4" type="video/mp4">
-                                        Seu navegador não suporta a tag de vídeo.
-                                    </video>
+                        <p class="slide-subtitle">Da captura digital à peça definitiva — três aplicações reais do CAD/CAM.</p>
+
+                        <div class="cases-grid">
+                            <div class="glass-card case-card">
+                                <div class="case-img-wrapper">
+                                    <div class="png-slot case-img">
+                                        <span>[ Fresadora + Coroa ]</span>
+                                    </div>
+                                    <span class="case-badge">Caso 1</span>
+                                </div>
+                                <div class="case-body">
+                                    <h3><i class="ph-duotone ph-crown icon-inline"></i> Coroa Unitária em Cerâmica</h3>
+                                    <p>Confecção de coroa em dente fraturado via escaneamento digital, planejamento computadorizado e fresagem precisa, com melhor estética e menor tempo clínico.</p>
                                 </div>
                             </div>
 
-                            <div class="split-text" style="flex: 1;">
-                                <div class="grid-layout cols-1 gap-1">
-                                    <div class="glass-card compact-card" style="border-left: 4px solid var(--accent);">
-                                        <h3><i class="ph-duotone ph-tooth icon-inline"></i> 1. Chairside</h3>
-                                        <p>Coroa de molar fresada e cimentada em apenas 2 horas.</p>
+                            <div class="glass-card case-card">
+                                <div class="case-img-wrapper">
+                                    <div class="png-slot case-img">
+                                        <span>[ Scanner Intraoral ]</span>
                                     </div>
-                                    <div class="glass-card compact-card" style="border-left: 4px solid var(--accent);">
-                                        <h3><i class="ph-duotone ph-intersect icon-inline"></i> 2. Fotogrametria</h3>
-                                        <p>Barra sobre implante com passividade perfeita via fluxo digital.</p>
-                                    </div>
-                                    <div class="glass-card compact-card" style="border-left: 4px solid var(--accent);">
-                                        <h3><i class="ph-duotone ph-smiley icon-inline"></i> 3. Odontopediatria</h3>
-                                        <p>O escaneamento 3D elimina a moldeira assustadora.</p>
-                                    </div>
+                                    <span class="case-badge">Caso 2</span>
+                                </div>
+                                <div class="case-body">
+                                    <h3><i class="ph-duotone ph-smiley icon-inline"></i> Facetas Dentárias</h3>
+                                    <p>Planejamento digital do sorriso com CAD/CAM. O escaneamento intraoral melhora a precisão e torna o tratamento mais previsível e personalizado.</p>
                                 </div>
                             </div>
 
+                            <div class="glass-card case-card">
+                                <div class="case-img-wrapper">
+                                    <div class="png-slot case-img">
+                                        <span>[ Software de Implante ]</span>
+                                    </div>
+                                    <span class="case-badge">Caso 3</span>
+                                </div>
+                                <div class="case-body">
+                                    <h3><i class="ph-duotone ph-tooth icon-inline"></i> Implantes Dentários</h3>
+                                    <p>Planejamento 3D com guia cirúrgica fresada. Posicionamento preciso dos implantes com segurança e previsibilidade máximas.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="slide">
+                <section class="slide slide-conclusion">
+                    <div class="dot-grid" style="top: 22px; right: 65px; grid-template-columns: repeat(9, 1fr);">
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="dot-grid" style="bottom: 55px; right: 28px; grid-template-columns: repeat(7, 1fr);">
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    </div>
+
                     <div class="slide-content">
-                        <h2 class="slide-title">12. Conclusão e Perspectivas</h2>
-
-                        <div class="split-layout mt-1">
-                            <div
-                                class="split-text glass-card"
-                                style="padding: 2.5rem;"
-                            >
-                                <i
-                                    class="ph-duotone ph-brain pulse-anim icon-main"
-                                    style="font-size: 4rem;"
-                                ></i>
-                                <h3>O Futuro é a IA e Novos Materiais</h3>
-                                <p style="font-size: 1.1rem; margin-top: 1rem;">
-                                    A Inteligência Artificial desenhará próteses instantaneamente.
-                                    No entanto,
-                                    <strong>o cirurgião-dentista será sempre o maestro</strong>
-                                    responsável pelo planejamento e diagnóstico biológico.
-                                </p>
+                        <div class="split-layout">
+                            <div class="split-text">
+                                <h2 class="slide-title conclusion-title">Conclusão</h2>
+                                <ul class="conclusion-list">
+                                    <li><i class="ph-bold ph-check-circle"></i><span>O CAD/CAM transformou a odontologia moderna.</span></li>
+                                    <li><i class="ph-bold ph-check-circle"></i><span>Trouxe mais precisão, rapidez e previsibilidade aos tratamentos.</span></li>
+                                    <li><i class="ph-bold ph-check-circle"></i><span>Melhorou a integração entre planejamento, diagnóstico e execução clínica.</span></li>
+                                    <li><i class="ph-bold ph-check-circle"></i><span>Apesar do custo inicial elevado, os benefícios clínicos são significativos.</span></li>
+                                    <li><i class="ph-bold ph-check-circle"></i><span>A odontologia digital tende a crescer cada vez mais.</span></li>
+                                </ul>
                             </div>
-
                             <div class="split-media">
                                 <div class="png-slot full-slot">
-                                    <span>[ Foto: Odontologia do Futuro ]</span>
+                                    <span>[ Dentista com Tela Digital ]</span>
                                 </div>
                             </div>
                         </div>
@@ -554,6 +572,8 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
+
+                <span id="slideCounter" class="slide-counter">1 / 13</span>
 
                 <button id="nextBtn" class="nav-btn">
                     <i class="ph-bold ph-caret-right"></i>
