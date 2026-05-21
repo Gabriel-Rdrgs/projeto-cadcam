@@ -23,6 +23,9 @@
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
+/* Base ligeiramente maior para melhor legibilidade em projeção */
+html { font-size: 17px; }
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: var(--bg-1);
@@ -160,7 +163,7 @@ body {
 }
 
 .slide-title {
-  font-size: 2.1rem;
+  font-size: 2.35rem;
   font-weight: 800;
   line-height: 1.15;
   background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
@@ -172,7 +175,7 @@ body {
 }
 
 .slide-subtitle {
-  font-size: 0.9rem;
+  font-size: 1.02rem;
   color: var(--muted);
   font-weight: 400;
   margin-top: 0.2rem;
@@ -459,7 +462,7 @@ body {
 }
 
 .ar-name {
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 600;
   flex: 1;
   color: var(--text);
@@ -538,7 +541,7 @@ body {
 }
 
 .trans-title {
-  font-size: 3.2rem;
+  font-size: 3.5rem;
   font-weight: 900;
   line-height: 1.1;
   color: #ffffff;
@@ -581,7 +584,7 @@ body {
   padding: 0.9rem 1rem !important;
 }
 
-.concept-box p { font-size: 0.87rem; color: var(--muted); line-height: 1.5; }
+.concept-box p { font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
 .concept-box strong { color: var(--text); }
 
 .icon-accent {
@@ -646,12 +649,12 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.cam-card-header h3 { font-size: 0.95rem; font-weight: 700; }
+.cam-card-header h3 { font-size: 1.03rem; font-weight: 700; }
 .cam-card-header i { font-size: 1.4rem; }
 .cam-sub i { color: var(--accent); }
 .cam-add i { color: var(--green); }
 
-.cam-card p { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.4; }
+.cam-card p { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.4; }
 
 .cam-tags { display: flex; flex-direction: column; gap: 0.3rem; }
 
@@ -752,8 +755,8 @@ body {
   margin-bottom: 0.15rem;
 }
 
-.tv-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
-.tv-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+.tv-card h4 { font-size: 0.96rem; font-weight: 700; margin-bottom: 0.2rem; }
+.tv-card p { font-size: 0.86rem; color: var(--muted); line-height: 1.4; }
 
 /* ══════════════════════════════════════════════
    COMPARAÇÃO DE FLUXO
@@ -783,7 +786,7 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.comp-header h3 { font-size: 1rem; font-weight: 700; }
+.comp-header h3 { font-size: 1.08rem; font-weight: 700; }
 .comp-icon { font-size: 1.5rem; }
 .comp-analog .comp-icon { color: #f87171; }
 .comp-digital .comp-icon { color: var(--green); }
@@ -794,7 +797,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   color: var(--muted);
   line-height: 1.35;
 }
@@ -886,8 +889,8 @@ body {
 .pipe-cad .pipe-icon { color: var(--accent); }
 .pipe-cam .pipe-icon { color: var(--green); }
 
-.pipe-step h4 { font-size: 0.82rem; font-weight: 700; line-height: 1.2; }
-.pipe-step p { font-size: 0.72rem; color: var(--muted); line-height: 1.3; }
+.pipe-step h4 { font-size: 0.9rem; font-weight: 700; line-height: 1.2; }
+.pipe-step p { font-size: 0.79rem; color: var(--muted); line-height: 1.3; }
 
 .pipe-bullets {
   list-style: none;
@@ -902,7 +905,7 @@ body {
 }
 
 .pipe-bullets li {
-  font-size: 0.67rem;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.35;
   padding-left: 0.75rem;
@@ -1033,7 +1036,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0.4rem;
-  font-size: 0.77rem;
+  font-size: 0.84rem;
   line-height: 1.3;
 }
 
@@ -1069,8 +1072,8 @@ body {
   margin-bottom: 0.1rem;
 }
 
-.app-card h4 { font-size: 0.88rem; font-weight: 700; }
-.app-card p { font-size: 0.75rem; color: var(--muted); line-height: 1.35; }
+.app-card h4 { font-size: 0.96rem; font-weight: 700; }
+.app-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.35; }
 
 /* ══════════════════════════════════════════════
    VANTAGENS E LIMITAÇÕES
@@ -1099,7 +1102,7 @@ body {
 }
 
 .pc-header i { font-size: 1.3rem; }
-.pc-header h3 { font-size: 0.95rem; font-weight: 700; }
+.pc-header h3 { font-size: 1.03rem; font-weight: 700; }
 .pc-pros { background: rgba(52,211,153,0.07); }
 .pc-pros i, .pc-pros h3 { color: var(--green); }
 .pc-cons { background: rgba(248,113,113,0.07); }
@@ -1118,7 +1121,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   line-height: 1.35;
 }
 
@@ -1127,6 +1130,55 @@ body {
 .cons-col .pc-list i { color: #f87171; }
 .pros-col .pc-list span { color: var(--text); }
 .cons-col .pc-list span { color: var(--muted); }
+
+/* ══════════════════════════════════════════════
+   BADGE DE EVIDÊNCIA (slide 15)
+══════════════════════════════════════════════ */
+.eco-evidence-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: rgba(251,146,60,0.08);
+  border: 1px solid rgba(251,146,60,0.22);
+  border-radius: 20px;
+  padding: 0.3rem 0.75rem;
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: fadeIn 0.4s 0.4s forwards;
+}
+
+.eco-evidence-badge i { color: var(--orange); font-size: 0.9rem; }
+.eco-evidence-badge strong { color: var(--text); }
+
+/* Linha de áreas (slide 15) */
+.eco-areas-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeIn 0.5s 0.6s forwards;
+}
+
+.eco-areas-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.eco-area-chip {
+  font-size: 0.7rem;
+  padding: 0.22rem 0.6rem;
+  background: rgba(251,146,60,0.07);
+  border: 1px solid rgba(251,146,60,0.2);
+  border-radius: 20px;
+  color: color-mix(in srgb, var(--orange) 80%, #fff);
+}
 
 /* ══════════════════════════════════════════════
    ECOSSISTEMA DIGITAL
@@ -1160,7 +1212,7 @@ body {
   align-items: center;
   gap: 0.6rem;
   padding: 0.65rem 0.85rem !important;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 500;
 }
 
@@ -1242,7 +1294,7 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.impact-top h3 { font-size: 0.95rem; font-weight: 700; }
+.impact-top h3 { font-size: 1.03rem; font-weight: 700; }
 .impact-icon { font-size: 1.5rem; }
 .impact-clinic { background: rgba(56,189,248,0.07); }
 .impact-clinic .impact-icon, .impact-clinic h3 { color: var(--accent); }
@@ -1261,7 +1313,7 @@ body {
 }
 
 .impact-list li {
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   color: var(--muted);
   padding-left: 0.85rem;
   position: relative;
@@ -1359,8 +1411,8 @@ body {
   margin-top: 0.2rem;
 }
 
-.case-step strong { font-size: 0.82rem; font-weight: 700; display: block; }
-.case-step p { font-size: 0.75rem; color: var(--muted); line-height: 1.3; margin: 0; }
+.case-step strong { font-size: 0.9rem; font-weight: 700; display: block; }
+.case-step p { font-size: 0.82rem; color: var(--muted); line-height: 1.3; margin: 0; }
 
 .result-box {
   display: flex;
@@ -1450,7 +1502,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  font-size: 0.88rem;
+  font-size: 0.96rem;
   color: var(--text);
   line-height: 1.4;
   opacity: 0;
