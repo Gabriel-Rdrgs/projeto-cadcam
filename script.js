@@ -19,10 +19,11 @@
 const IMAGES = {
 
   // ── Slide 04 — Softwares CAD ──────────────────
-  'scanner':        'assets/imgs/scanner-intraoral.png',
+  'scanner':        'assets/imgs/Ana Mascarenhas/CAD.jpg',
 
   // ── Slide 05 — Softwares CAM ──────────────────
-  'fresadora':      'assets/imgs/fresadora-cadcam.png',
+  'fresadora':      'assets/imgs/Ana Mascarenhas/CAM-Fresadora.png',
+  'impressao3d':    'assets/imgs/Zeca/IMG_8022.WEBP',
 
   // ── Slide 06 — Introdução / Timeline ──────────
   'cerec':          'assets/imgs/cerec-1985.png',
@@ -31,18 +32,18 @@ const IMAGES = {
   // (sem slot de imagem nesse slide)
 
   // ── Slide 10 — Tipos de Sistema ───────────────
-  'type-chairside': '',   // ex.: 'assets/imgs/chairside.jpg'
-  'type-lab':       '',   // ex.: 'assets/imgs/laboratorial.jpg'
-  'type-central':   '',   // ex.: 'assets/imgs/centralizado.jpg'
+  'type-chairside': 'assets/imgs/Zeca/19390A0C-302A-4ABC-937E-DEEC99E03F1B.png',
+  'type-lab':       'assets/imgs/Zeca/2FB14A2F-D862-4985-999B-4E6E8FBFB8B2.png',
+  'type-central':   'assets/imgs/Zeca/299A167D-9492-4CD2-84AE-BC7B558BB79F.png',
 
   // ── Slide 19 — Caso 1: Coroa Unitária ─────────
-  'casos':          'assets/imgs/casos-before-after.png',
+  'casos':          'assets/imgs/Amanda/drive-download-20260529T215807Z-3-001/WhatsApp Image 2026-05-15 at 15.31.10.jpeg',
 
   // ── Slide 20 — Caso 2: Facetas ────────────────
-  'alinhadores':    'assets/imgs/alinhadores-clear.png',
+  'alinhadores':    'assets/imgs/Amanda/drive-download-20260529T215807Z-3-001/WhatsApp Image 2026-05-15 at 15.45.50.jpeg',
 
   // ── Slide 21 — Caso 3: Implantes ──────────────
-  'fluxo-digital':  'assets/imgs/fluxo-digital-diagrama.png',
+  'fluxo-digital':  'assets/imgs/Amanda/drive-download-20260529T215807Z-3-001/WhatsApp Image 2026-05-15 at 15.31.34.jpeg',
 
   // ── Slide 22 — Conclusão + Capa (fundo) ───────
   'ia-futuro':      'assets/imgs/ia-futuro.png',
@@ -188,6 +189,13 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => { resize(); init(); });
 });
 
+// Controla qual parte da imagem fica visível quando o recorte (cover) é aplicado.
+// Valores aceitos: qualquer valor CSS de object-position (ex.: 'top', 'right center', '30% 20%').
+const POSITIONS = {
+  'casos':        'top center',   // mostra a fresadora (parte superior do díptico vertical)
+  'fluxo-digital': 'right center', // mostra o guia cirúrgico (lado direito do díptico horizontal)
+};
+
 /* ── Aplica imagens via data-img ──────────────── */
 function applyImages() {
   document.querySelectorAll('[data-img]').forEach(slot => {
@@ -199,6 +207,7 @@ function applyImages() {
     const img = new Image();
     img.alt = slot.dataset.label || key;
     img.onload = () => {
+      if (POSITIONS[key]) img.style.objectPosition = POSITIONS[key];
       slot.appendChild(img);
       slot.classList.add('has-image');
     };
